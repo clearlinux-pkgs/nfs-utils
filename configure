@@ -1,0 +1,1 @@
+--without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc

@@ -1,0 +1,9 @@
+# This file contains additional build requirements that did not get
+# picked up automatically. One name per line, no whitespace.
+libevent-dev
+libcap-dev
+libtirpc-dev
+LVM2-dev
+libnfsidmap-dev
+sqlite-autoconf-dev
+util-linux-dev
