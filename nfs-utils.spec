@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 1.3.2
-Release  : 2
+Release  : 3
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Summary  : No detailed summary available
