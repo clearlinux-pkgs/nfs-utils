@@ -1,0 +1,24 @@
+From 1fb1c2807cc07803159740dc5b072663f4009805 Mon Sep 17 00:00:00 2001
+From: Guillermo Ponce <guillermo.a.ponce.castaneda@intel.com>
+Date: Tue, 16 Feb 2016 21:47:07 +0000
+Subject: [PATCH] Fixing systemd configure
+
+---
+ configure | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/configure b/configure
+index 3d8b84d..72d241a 100755
+--- a/configure
++++ b/configure
+@@ -5026,7 +5026,6 @@ unitdir=/usr/lib/systemd/system
+ # Check whether --with-systemd was given.
+ if test "${with_systemd+set}" = set; then :
+   withval=$with_systemd; test "$withval" = "no" && use_systemd=0 || unitdir=$withval use_systemd=1
+-	use_systemd=0
+ 
+ fi
+ 
+-- 
+2.7.0
+
