@@ -4,13 +4,14 @@
 #
 Name     : nfs-utils
 Version  : 1.3.2
-Release  : 3
+Release  : 4
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: nfs-utils-bin
+Requires: nfs-utils-config
 Requires: nfs-utils-doc
 BuildRequires : LVM2-dev
 BuildRequires : libcap-dev
@@ -19,6 +20,7 @@ BuildRequires : libnfsidmap-dev
 BuildRequires : libtirpc-dev
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
+Patch1: 0001-Fixing-systemd-configure.patch
 
 %description
 This is nfs-utils, the Linux NFS userland utility package.
@@ -28,9 +30,18 @@ Home page:  http://sourceforge.net/projects/nfs/
 %package bin
 Summary: bin components for the nfs-utils package.
 Group: Binaries
+Requires: nfs-utils-config
 
 %description bin
 bin components for the nfs-utils package.
+
+
+%package config
+Summary: config components for the nfs-utils package.
+Group: Default
+
+%description config
+config components for the nfs-utils package.
 
 
 %package doc
@@ -43,9 +54,10 @@ doc components for the nfs-utils package.
 
 %prep
 %setup -q -n nfs-utils-1.3.2
+%patch1 -p1
 
 %build
-%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc
+%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system
 make V=1  %{?_smp_mflags}
 
 %check
@@ -86,6 +98,24 @@ rm -rf %{buildroot}
 /usr/bin/start-statd
 /usr/bin/umount.nfs
 /usr/bin/umount.nfs4
+
+%files config
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/auth-rpcgss-module.service
+/usr/lib/systemd/system/nfs-blkmap.service
+/usr/lib/systemd/system/nfs-blkmap.target
+/usr/lib/systemd/system/nfs-client.target
+/usr/lib/systemd/system/nfs-config.service
+/usr/lib/systemd/system/nfs-idmapd.service
+/usr/lib/systemd/system/nfs-mountd.service
+/usr/lib/systemd/system/nfs-server.service
+/usr/lib/systemd/system/nfs-utils.service
+/usr/lib/systemd/system/proc-fs-nfsd.mount
+/usr/lib/systemd/system/rpc-gssd.service
+/usr/lib/systemd/system/rpc-statd-notify.service
+/usr/lib/systemd/system/rpc-statd.service
+/usr/lib/systemd/system/rpc-svcgssd.service
+/usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
 
 %files doc
 %defattr(-,root,root,-)
