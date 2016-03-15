@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 1.3.2
-Release  : 4
+Release  : 5
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.2/nfs-utils-1.3.2.tar.bz2
 Summary  : No detailed summary available
@@ -21,6 +21,8 @@ BuildRequires : libtirpc-dev
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 Patch1: 0001-Fixing-systemd-configure.patch
+Patch2: 0002-fix-rpc-statd-start.patch
+Patch3: 0003-add-nfs-utils-env-script.patch
 
 %description
 This is nfs-utils, the Linux NFS userland utility package.
@@ -55,6 +57,8 @@ doc components for the nfs-utils package.
 %prep
 %setup -q -n nfs-utils-1.3.2
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system
@@ -69,6 +73,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 %install
 rm -rf %{buildroot}
 %make_install
+## make_install_append content
+mkdir -p %{buildroot}/usr/lib/systemd/scripts
+mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
+mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+ln -s /usr/lib/systemd/system/rpcbind.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
+ln -s /usr/lib/systemd/system/rpcbind.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
+cp systemd/nfs-utils_env.sh %{buildroot}/usr/lib/systemd/scripts
+chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -101,7 +114,9 @@ rm -rf %{buildroot}
 
 %files config
 %defattr(-,root,root,-)
+/usr/lib/systemd/scripts/nfs-utils_env.sh
 /usr/lib/systemd/system/auth-rpcgss-module.service
+/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
 /usr/lib/systemd/system/nfs-blkmap.service
 /usr/lib/systemd/system/nfs-blkmap.target
 /usr/lib/systemd/system/nfs-client.target
@@ -115,6 +130,7 @@ rm -rf %{buildroot}
 /usr/lib/systemd/system/rpc-statd-notify.service
 /usr/lib/systemd/system/rpc-statd.service
 /usr/lib/systemd/system/rpc-svcgssd.service
+/usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
 /usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
 
 %files doc
