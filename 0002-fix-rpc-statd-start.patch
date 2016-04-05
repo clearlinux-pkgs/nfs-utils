@@ -2,7 +2,8 @@
 +++ nfs-utils-1.3.2/systemd/rpc-statd.service	2016-03-15 04:27:43.030847889 +0000
 @@ -14,4 +14,4 @@
  EnvironmentFile=-/run/sysconfig/nfs-utils
- Type=forking
+-Type=forking
++Type=simple
  PIDFile=/var/run/rpc.statd.pid
 -ExecStart=/usr/sbin/rpc.statd --no-notify $STATDARGS
 +ExecStart=/usr/sbin/rpc.statd --no-notify -F $STATDARGS
