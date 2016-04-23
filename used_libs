@@ -1,0 +1,7 @@
+libblkid.so.1
+libc.so.6
+libcap.so.2
+libdevmapper.so.1.02
+libevent-2.0.so.5
+libnfsidmap.so.0
+libsqlite3.so.0

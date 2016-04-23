@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 1.3.3
-Release  : 9
+Release  : 10
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Summary  : No detailed summary available
@@ -53,6 +53,14 @@ Group: Documentation
 doc components for the nfs-utils package.
 
 
+%package extras
+Summary: extras components for the nfs-utils package.
+Group: Default
+
+%description extras
+extras components for the nfs-utils package.
+
+
 %prep
 %setup -q -n nfs-utils-1.3.3
 %patch1 -p1
@@ -90,13 +98,13 @@ chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 
 %files bin
 %defattr(-,root,root,-)
+%exclude /usr/bin/mountstats
+%exclude /usr/bin/nfsiostat
 /usr/bin/blkmapd
 /usr/bin/exportfs
 /usr/bin/mount.nfs
 /usr/bin/mount.nfs4
-/usr/bin/mountstats
 /usr/bin/nfsdcltrack
-/usr/bin/nfsiostat
 /usr/bin/nfsstat
 /usr/bin/osd_login
 /usr/bin/rpc.idmapd
@@ -132,3 +140,8 @@ chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 %doc /usr/share/man/man5/*
 %doc /usr/share/man/man7/*
 %doc /usr/share/man/man8/*
+
+%files extras
+%defattr(-,root,root,-)
+/usr/bin/mountstats
+/usr/bin/nfsiostat
