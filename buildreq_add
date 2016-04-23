@@ -7,3 +7,5 @@ LVM2-dev
 libnfsidmap-dev
 sqlite-autoconf-dev
 util-linux-dev
+keyutils-dev
+e2fsprogs-dev

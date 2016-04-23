@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 1.3.3
-Release  : 10
+Release  : 11
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Summary  : No detailed summary available
@@ -14,6 +14,8 @@ Requires: nfs-utils-bin
 Requires: nfs-utils-config
 Requires: nfs-utils-doc
 BuildRequires : LVM2-dev
+BuildRequires : e2fsprogs-dev
+BuildRequires : keyutils-dev
 BuildRequires : libcap-dev
 BuildRequires : libevent-dev
 BuildRequires : libnfsidmap-dev
@@ -105,6 +107,7 @@ chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 /usr/bin/mount.nfs
 /usr/bin/mount.nfs4
 /usr/bin/nfsdcltrack
+/usr/bin/nfsidmap
 /usr/bin/nfsstat
 /usr/bin/osd_login
 /usr/bin/rpc.idmapd
