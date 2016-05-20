@@ -4,9 +4,10 @@
 #
 Name     : nfs-utils
 Version  : 1.3.3
-Release  : 13
+Release  : 14
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
+Source1  : nfs-utils.tmpfiles
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
@@ -69,7 +70,7 @@ extras components for the nfs-utils package.
 %patch2 -p1
 
 %build
-%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system
+%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs
 make V=1  %{?_smp_mflags}
 
 %check
@@ -81,6 +82,8 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 %install
 rm -rf %{buildroot}
 %make_install
+mkdir -p %{buildroot}/usr/lib/tmpfiles.d
+install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nfs-utils.conf
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/scripts
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
@@ -89,14 +92,11 @@ ln -s /usr/lib/systemd/system/rpcbind.socket %{buildroot}/usr/lib/systemd/system
 ln -s /usr/lib/systemd/system/rpcbind.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
 cp systemd/nfs-utils_env.sh %{buildroot}/usr/lib/systemd/scripts
 chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
+rm -rf %{buildroot}/run
 ## make_install_append end
 
 %files
 %defattr(-,root,root,-)
-/var/lib/nfs/etab
-/var/lib/nfs/rmtab
-/var/lib/nfs/state
-/var/lib/nfs/xtab
 
 %files bin
 %defattr(-,root,root,-)
@@ -137,6 +137,7 @@ chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 /usr/lib/systemd/system/rpc-statd.service
 /usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
 /usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
+/usr/lib/tmpfiles.d/nfs-utils.conf
 
 %files doc
 %defattr(-,root,root,-)
