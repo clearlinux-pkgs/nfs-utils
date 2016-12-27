@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 1.3.3
-Release  : 14
+Release  : 15
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/1.3.3/nfs-utils-1.3.3.tar.bz2
 Source1  : nfs-utils.tmpfiles
@@ -70,10 +70,12 @@ extras components for the nfs-utils package.
 %patch2 -p1
 
 %build
+export LANG=C
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs
 make V=1  %{?_smp_mflags}
 
 %check
+export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost
@@ -86,10 +88,6 @@ mkdir -p %{buildroot}/usr/lib/tmpfiles.d
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nfs-utils.conf
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/scripts
-mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s /usr/lib/systemd/system/rpcbind.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
-ln -s /usr/lib/systemd/system/rpcbind.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
 cp systemd/nfs-utils_env.sh %{buildroot}/usr/lib/systemd/scripts
 chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 rm -rf %{buildroot}/run
@@ -124,7 +122,6 @@ rm -rf %{buildroot}/run
 %files config
 %defattr(-,root,root,-)
 /usr/lib/systemd/scripts/nfs-utils_env.sh
-/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
 /usr/lib/systemd/system/nfs-blkmap.service
 /usr/lib/systemd/system/nfs-client.target
 /usr/lib/systemd/system/nfs-config.service
@@ -135,7 +132,6 @@ rm -rf %{buildroot}/run
 /usr/lib/systemd/system/proc-fs-nfsd.mount
 /usr/lib/systemd/system/rpc-statd-notify.service
 /usr/lib/systemd/system/rpc-statd.service
-/usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
 /usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
 /usr/lib/tmpfiles.d/nfs-utils.conf
 

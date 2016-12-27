@@ -1,8 +1,4 @@
 mkdir -p %{buildroot}/usr/lib/systemd/scripts
-mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s /usr/lib/systemd/system/rpcbind.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/rpcbind.socket
-ln -s /usr/lib/systemd/system/rpcbind.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rpcbind.service
 cp systemd/nfs-utils_env.sh %{buildroot}/usr/lib/systemd/scripts
 chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
 rm -rf %{buildroot}/run
