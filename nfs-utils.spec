@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.1.1
-Release  : 17
+Release  : 18
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/2.1.1/nfs-utils-2.1.1.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/2.1.1/nfs-utils-2.1.1.tar.bz2
 Source1  : nfs-utils.tmpfiles
