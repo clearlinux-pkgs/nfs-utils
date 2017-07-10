@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.1.1
-Release  : 19
+Release  : 20
 URL      : http://downloads.sourceforge.net/project/nfs/nfs-utils/2.1.1/nfs-utils-2.1.1.tar.bz2
 Source0  : http://downloads.sourceforge.net/project/nfs/nfs-utils/2.1.1/nfs-utils-2.1.1.tar.bz2
 Source1  : nfs-utils.tmpfiles
@@ -24,6 +24,7 @@ BuildRequires : libtirpc-dev
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 Patch1: 0003-add-nfs-utils-env-script.patch
+Patch2: 0004-require-rpcbind-for-nfs-server.patch
 
 %description
 This is nfs-utils, the Linux NFS userland utility package.
@@ -66,10 +67,14 @@ extras components for the nfs-utils package.
 %prep
 %setup -q -n nfs-utils-2.1.1
 %patch1 -p1
+%patch2 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1484413826
+export SOURCE_DATE_EPOCH=1499710253
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs
 make V=1  %{?_smp_mflags}
 
@@ -77,11 +82,11 @@ make V=1  %{?_smp_mflags}
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1484413826
+export SOURCE_DATE_EPOCH=1499710253
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
