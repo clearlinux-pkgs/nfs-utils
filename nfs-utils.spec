@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.2.1
-Release  : 22
+Release  : 23
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.2.1/nfs-utils-2.2.1.tar.bz2
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.2.1/nfs-utils-2.2.1.tar.bz2
 Source1  : nfs-utils.tmpfiles
@@ -97,12 +97,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1511139751
-%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --enable-static
+export SOURCE_DATE_EPOCH=1511141054
+%configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --with-pluginpath=/usr/lib64/libnfsidmap/
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1511139751
+export SOURCE_DATE_EPOCH=1511141054
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
