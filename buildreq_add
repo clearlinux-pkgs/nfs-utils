@@ -4,7 +4,7 @@ libevent-dev
 libcap-dev
 libtirpc-dev
 LVM2-dev
-libnfsidmap-dev
+nfs-utils-dev
 sqlite-autoconf-dev
 util-linux-dev
 keyutils-dev

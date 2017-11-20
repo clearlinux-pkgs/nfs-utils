@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.2.1
-Release  : 23
+Release  : 24
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.2.1/nfs-utils-2.2.1.tar.bz2
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.2.1/nfs-utils-2.2.1.tar.bz2
 Source1  : nfs-utils.tmpfiles
@@ -21,8 +21,8 @@ BuildRequires : glibc-staticdev
 BuildRequires : keyutils-dev
 BuildRequires : libcap-dev
 BuildRequires : libevent-dev
-BuildRequires : libnfsidmap-dev
 BuildRequires : libtirpc-dev
+BuildRequires : nfs-utils-dev
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 Patch1: 0003-add-nfs-utils-env-script.patch
@@ -97,12 +97,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1511141054
+export SOURCE_DATE_EPOCH=1511141152
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --with-pluginpath=/usr/lib64/libnfsidmap/
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1511141054
+export SOURCE_DATE_EPOCH=1511141152
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
