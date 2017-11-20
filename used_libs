@@ -2,7 +2,8 @@ libblkid.so.1
 libc.so.6
 libcap.so.2
 libdevmapper.so.1.02
+libdl.so.2
 libevent-2.0.so.5
 libkeyutils.so.1
-libnfsidmap.so.0
+libresolv.so.2
 libsqlite3.so.0

@@ -1,4 +1,7 @@
 Configure miss: BSD signal semantics
+Configure miss: ldap.h usability
+Configure miss: ldap.h presence
+Configure miss: ldap.h
 Configure miss: nfs-plugin.h usability
 Configure miss: nfs-plugin.h presence
 Configure miss: nfs-plugin.h

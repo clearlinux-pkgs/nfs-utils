@@ -9,3 +9,4 @@ sqlite-autoconf-dev
 util-linux-dev
 keyutils-dev
 e2fsprogs-dev
+glibc-staticdev

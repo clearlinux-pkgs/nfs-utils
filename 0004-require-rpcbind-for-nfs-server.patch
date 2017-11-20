@@ -1,13 +1,11 @@
-nfs-server fails to start unless rpcbind is active.
-
---- nfs-utils-2.1.1/systemd/nfs-server.service~	2017-07-10 11:07:59.541393548 -0700
-+++ nfs-utils-2.1.1/systemd/nfs-server.service	2017-07-10 11:08:25.916395328 -0700
+--- nfs-utils-2.2.1/systemd/nfs-server.service~	2017-10-30 15:28:18.000000000 +0000
++++ nfs-utils-2.2.1/systemd/nfs-server.service	2017-11-20 00:52:16.288759655 +0000
 @@ -3,7 +3,7 @@
  DefaultDependencies=no
  Requires= network.target proc-fs-nfsd.mount
  Requires= nfs-mountd.service
--Wants=rpcbind.socket
-+Requires=rpcbind.socket
+-Wants=rpcbind.socket network-online.target
++Requires= rpcbind.socket
  Wants=rpc-statd.service nfs-idmapd.service
  Wants=rpc-statd-notify.service
  

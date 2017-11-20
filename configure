@@ -1,1 +1,1 @@
---without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs
+--without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --enable-static
