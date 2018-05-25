@@ -1,5 +1,2 @@
 Configure miss: BSD signal semantics
-Configure miss: nfs-plugin.h usability
-Configure miss: nfs-plugin.h presence
-Configure miss: nfs-plugin.h
 Configure miss: whether lstat accepts an empty string
