@@ -4,18 +4,20 @@
 #
 Name     : nfs-utils
 Version  : 2.3.3
-Release  : 30
+Release  : 31
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.3.3/nfs-utils-2.3.3.tar.bz2
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.3.3/nfs-utils-2.3.3.tar.bz2
 Source1  : nfs-utils.tmpfiles
 Summary  : Library that handles mapping between names and ids for NFSv4.
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0
-Requires: nfs-utils-bin
-Requires: nfs-utils-config
-Requires: nfs-utils-lib
-Requires: nfs-utils-license
-Requires: nfs-utils-man
+Requires: nfs-utils-bin = %{version}-%{release}
+Requires: nfs-utils-config = %{version}-%{release}
+Requires: nfs-utils-lib = %{version}-%{release}
+Requires: nfs-utils-license = %{version}-%{release}
+Requires: nfs-utils-man = %{version}-%{release}
+Requires: nfs-utils-services = %{version}-%{release}
+Requires: rpcbind
 BuildRequires : LVM2-dev
 BuildRequires : e2fsprogs-dev
 BuildRequires : glibc-staticdev
@@ -38,9 +40,10 @@ Home page:  http://sourceforge.net/projects/nfs/
 %package bin
 Summary: bin components for the nfs-utils package.
 Group: Binaries
-Requires: nfs-utils-config
-Requires: nfs-utils-license
-Requires: nfs-utils-man
+Requires: nfs-utils-config = %{version}-%{release}
+Requires: nfs-utils-license = %{version}-%{release}
+Requires: nfs-utils-man = %{version}-%{release}
+Requires: nfs-utils-services = %{version}-%{release}
 
 %description bin
 bin components for the nfs-utils package.
@@ -57,9 +60,9 @@ config components for the nfs-utils package.
 %package dev
 Summary: dev components for the nfs-utils package.
 Group: Development
-Requires: nfs-utils-lib
-Requires: nfs-utils-bin
-Provides: nfs-utils-devel
+Requires: nfs-utils-lib = %{version}-%{release}
+Requires: nfs-utils-bin = %{version}-%{release}
+Provides: nfs-utils-devel = %{version}-%{release}
 
 %description dev
 dev components for the nfs-utils package.
@@ -76,7 +79,7 @@ extras components for the nfs-utils package.
 %package lib
 Summary: lib components for the nfs-utils package.
 Group: Libraries
-Requires: nfs-utils-license
+Requires: nfs-utils-license = %{version}-%{release}
 
 %description lib
 lib components for the nfs-utils package.
@@ -98,6 +101,14 @@ Group: Default
 man components for the nfs-utils package.
 
 
+%package services
+Summary: services components for the nfs-utils package.
+Group: Systemd services
+
+%description services
+services components for the nfs-utils package.
+
+
 %prep
 %setup -q -n nfs-utils-2.3.3
 %patch1 -p1
@@ -109,17 +120,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1536422135
+export SOURCE_DATE_EPOCH=1546898167
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --with-pluginpath=/usr/lib64/libnfsidmap/
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1536422135
+export SOURCE_DATE_EPOCH=1546898167
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/nfs-utils
-cp COPYING %{buildroot}/usr/share/doc/nfs-utils/COPYING
-cp support/nfsidmap/COPYING %{buildroot}/usr/share/doc/nfs-utils/support_nfsidmap_COPYING
-cp utils/statd/COPYING %{buildroot}/usr/share/doc/nfs-utils/utils_statd_COPYING
+mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
+cp COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/COPYING
+cp support/nfsidmap/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/support_nfsidmap_COPYING
+cp utils/statd/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/utils_statd_COPYING
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nfs-utils.conf
@@ -159,20 +170,6 @@ rm -rf %{buildroot}/run
 
 %files config
 %defattr(-,root,root,-)
-/usr/lib/systemd/scripts/nfs-utils_env.sh
-/usr/lib/systemd/system-generators/nfs-server-generator
-/usr/lib/systemd/system-generators/rpc-pipefs-generator
-/usr/lib/systemd/system/nfs-blkmap.service
-/usr/lib/systemd/system/nfs-client.target
-/usr/lib/systemd/system/nfs-idmapd.service
-/usr/lib/systemd/system/nfs-mountd.service
-/usr/lib/systemd/system/nfs-server.service
-/usr/lib/systemd/system/nfs-utils.service
-/usr/lib/systemd/system/proc-fs-nfsd.mount
-/usr/lib/systemd/system/rpc-statd-notify.service
-/usr/lib/systemd/system/rpc-statd.service
-/usr/lib/systemd/system/rpc_pipefs.target
-/usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
 /usr/lib/tmpfiles.d/nfs-utils.conf
 
 %files dev
@@ -196,13 +193,13 @@ rm -rf %{buildroot}/run
 /usr/lib64/libnfsidmap/umich_ldap.so
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/nfs-utils/COPYING
-/usr/share/doc/nfs-utils/support_nfsidmap_COPYING
-/usr/share/doc/nfs-utils/utils_statd_COPYING
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/nfs-utils/COPYING
+/usr/share/package-licenses/nfs-utils/support_nfsidmap_COPYING
+/usr/share/package-licenses/nfs-utils/utils_statd_COPYING
 
 %files man
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/man/man5/exports.5
 /usr/share/man/man5/idmapd.conf.5
 /usr/share/man/man5/nfs.5
@@ -232,3 +229,20 @@ rm -rf %{buildroot}/run
 /usr/share/man/man8/sm-notify.8
 /usr/share/man/man8/statd.8
 /usr/share/man/man8/umount.nfs.8
+
+%files services
+%defattr(-,root,root,-)
+/usr/lib/systemd/scripts/nfs-utils_env.sh
+/usr/lib/systemd/system-generators/nfs-server-generator
+/usr/lib/systemd/system-generators/rpc-pipefs-generator
+/usr/lib/systemd/system/nfs-blkmap.service
+/usr/lib/systemd/system/nfs-client.target
+/usr/lib/systemd/system/nfs-idmapd.service
+/usr/lib/systemd/system/nfs-mountd.service
+/usr/lib/systemd/system/nfs-server.service
+/usr/lib/systemd/system/nfs-utils.service
+/usr/lib/systemd/system/proc-fs-nfsd.mount
+/usr/lib/systemd/system/rpc-statd-notify.service
+/usr/lib/systemd/system/rpc-statd.service
+/usr/lib/systemd/system/rpc_pipefs.target
+/usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount

@@ -1,6 +1,5 @@
 libblkid.so.1
 libc.so.6
-libcap.so.2
 libdevmapper.so.1.02
 libdl.so.2
 libevent-2.1.so.6
