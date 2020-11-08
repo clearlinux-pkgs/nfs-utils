@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.4.3
-Release  : 37
+Release  : 38
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.4.3/nfs-utils-2.4.3.tar.xz
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.4.3/nfs-utils-2.4.3.tar.xz
 Source1  : nfs-utils.tmpfiles
@@ -34,11 +34,9 @@ Patch2: 0004-require-rpcbind-for-nfs-server.patch
 Patch3: 0005-missing-header.patch
 
 %description
-This package contains a greatly revised NFS implementation for Linux
-along with the necessary daemons and utilities. There are still several
-features missing that I'd want to include, and there are some recent
-improvements to the Linux NFS kernel client not reflected here (notably
-the attrtimeo fix).
+This is nfs-utils, the Linux NFS userland utility package.
+0. PROJECT RESOURCES
+Home page:  http://sourceforge.net/projects/nfs/
 
 %package bin
 Summary: bin components for the nfs-utils package.
@@ -65,7 +63,6 @@ Group: Development
 Requires: nfs-utils-lib = %{version}-%{release}
 Requires: nfs-utils-bin = %{version}-%{release}
 Provides: nfs-utils-devel = %{version}-%{release}
-Requires: nfs-utils = %{version}-%{release}
 Requires: nfs-utils = %{version}-%{release}
 
 %description dev
@@ -125,21 +122,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1581641054
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1604873887
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static --without-tcp-wrappers --disable-gss --disable-ipv6 --disable-tirpc --with-systemd=/usr/lib/systemd/system --with-statedir=/run/nfs --with-pluginpath=/usr/lib64/libnfsidmap/
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1581641054
+export SOURCE_DATE_EPOCH=1604873887
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
 cp %{_builddir}/nfs-utils-2.4.3/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d
