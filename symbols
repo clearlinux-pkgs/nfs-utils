@@ -11,6 +11,7 @@ libnfsidmap.so.1:nfs4_name_to_gid
 libnfsidmap.so.1:nfs4_name_to_uid
 libnfsidmap.so.1:nfs4_owner_to_uid
 libnfsidmap.so.1:nfs4_set_debug
+libnfsidmap.so.1:nfs4_term_name_mapping
 libnfsidmap.so.1:nfs4_uid_to_name
 libnfsidmap.so.1:nfs4_uid_to_owner
 libnfsidmap.so.1:nfsidmap_config_get

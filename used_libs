@@ -3,7 +3,7 @@ libc.so.6
 libcap.so.2
 libdevmapper.so.1.02
 libdl.so.2
-libevent-2.1.so.7
+libevent_core-2.1.so.7
 libgcc_s.so.1
 libkeyutils.so.1
 libldap-2.4.so.2

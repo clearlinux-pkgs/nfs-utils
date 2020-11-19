@@ -1,10 +1,10 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
-libcap-dev
-libtirpc-dev
 LVM2-dev
-sqlite-autoconf-dev
-util-linux-dev
-keyutils-dev
 e2fsprogs-dev
 glibc-staticdev
+keyutils-dev
+libcap-dev
+libtirpc-dev
+sqlite-autoconf-dev
+util-linux-dev

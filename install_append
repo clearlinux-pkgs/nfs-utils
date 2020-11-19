@@ -1,4 +1,3 @@
 mkdir -p %{buildroot}/usr/lib/systemd/scripts
-cp systemd/nfs-utils_env.sh %{buildroot}/usr/lib/systemd/scripts
-chmod 755 %{buildroot}/usr/lib/systemd/scripts/nfs-utils_env.sh
+install -Dm755 -t %{buildroot}/usr/lib/systemd/scripts systemd/nfs-utils_env.sh
 rm -rf %{buildroot}/run

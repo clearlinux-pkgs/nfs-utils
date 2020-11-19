@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jim Chamings <jim.chamings@intel.com>
+Date: Tue, 15 Mar 2016 05:22:07 +0000
+Subject: [PATCH] Enabling nfs-client by default on installation
+
+---
+ systemd/nfs-utils_env.sh | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 systemd/nfs-utils_env.sh
+
+diff --git a/systemd/nfs-utils_env.sh b/systemd/nfs-utils_env.sh
+new file mode 100644
+index 0000000..b973294
+--- /dev/null
++++ b/systemd/nfs-utils_env.sh
+@@ -0,0 +1,6 @@
++#!/bin/sh
++# make required directories
++mkdir -p /var/lib/nfs/statd
++mkdir /var/lib/nfs/sm
++chown -R daemon:daemon /var/lib/nfs
++exit 0

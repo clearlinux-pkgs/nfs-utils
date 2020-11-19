@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Mon, 10 Jul 2017 11:10:54 -0700
+Subject: [PATCH] Require rpcbind for nfs-server
+
+nfs-server fails to start unless rpcbind is active.
+---
+ systemd/nfs-server.service | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/systemd/nfs-server.service b/systemd/nfs-server.service
+index 06c1adb..3acae3d 100644
+--- a/systemd/nfs-server.service
++++ b/systemd/nfs-server.service
+@@ -3,7 +3,8 @@ Description=NFS server and services
+ DefaultDependencies=no
+ Requires=network.target proc-fs-nfsd.mount
+ Requires=nfs-mountd.service
+-Wants=rpcbind.socket network-online.target
++Wants=network-online.target
++Requires=rpcbind.socket
+ Wants=rpc-statd.service nfs-idmapd.service
+ Wants=rpc-statd-notify.service
+ Wants=nfsdcld.service
