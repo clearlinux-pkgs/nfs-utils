@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.5.2
-Release  : 39
+Release  : 40
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.5.2/nfs-utils-2.5.2.tar.xz
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.5.2/nfs-utils-2.5.2.tar.xz
 Source1  : nfs-utils.tmpfiles
@@ -19,19 +19,27 @@ Requires: nfs-utils-man = %{version}-%{release}
 Requires: nfs-utils-services = %{version}-%{release}
 Requires: rpcbind
 BuildRequires : LVM2-dev
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : cyrus-sasl-dev
 BuildRequires : e2fsprogs-dev
+BuildRequires : gettext-bin
 BuildRequires : glibc-staticdev
 BuildRequires : keyutils-dev
 BuildRequires : libcap-dev
 BuildRequires : libtirpc-dev
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : openldap-dev
+BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(libevent)
 BuildRequires : rpcbind
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 Patch1: 0001-Enabling-nfs-client-by-default-on-installation.patch
 Patch2: 0002-Require-rpcbind-for-nfs-server.patch
+Patch3: 0003-Fix-rpc_pipefs-paths-to-run-nfs.patch
 
 %description
 This is nfs-utils, the Linux NFS userland utility package.
@@ -115,13 +123,14 @@ services components for the nfs-utils package.
 cd %{_builddir}/nfs-utils-2.5.2
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605768334
+export SOURCE_DATE_EPOCH=1610584707
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -130,7 +139,7 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-static --without-tcp-wrappers \
+%reconfigure --disable-static --without-tcp-wrappers \
 --disable-gss \
 --disable-ipv6 \
 --disable-tirpc \
@@ -147,7 +156,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1605768334
+export SOURCE_DATE_EPOCH=1610584707
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
 cp %{_builddir}/nfs-utils-2.5.2/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d
@@ -272,4 +281,4 @@ rm -rf %{buildroot}/run
 /usr/lib/systemd/system/rpc-statd-notify.service
 /usr/lib/systemd/system/rpc-statd.service
 /usr/lib/systemd/system/rpc_pipefs.target
-/usr/lib/systemd/system/var-lib-nfs-rpc_pipefs.mount
+/usr/lib/systemd/system/run-nfs-rpc_pipefs.mount

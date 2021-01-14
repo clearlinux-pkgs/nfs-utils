@@ -1,2 +1,3 @@
 0001-Enabling-nfs-client-by-default-on-installation.patch
 0002-Require-rpcbind-for-nfs-server.patch
+0003-Fix-rpc_pipefs-paths-to-run-nfs.patch
