@@ -1,6 +1,7 @@
-Configure miss: g++ option to enable C++11 features
 Configure miss: BSD signal semantics
-Configure miss: sasl.h
-Configure miss: gsssasl.h
+Configure miss: authgss_free_private_data in -ltirpc
+Configure miss: g++ option to enable C++11 features
 Configure miss: gss_krb5_ccache_name in -lgssapi_krb5
+Configure miss: gsssasl.h
+Configure miss: sasl.h
 Configure miss: whether lstat accepts an empty string

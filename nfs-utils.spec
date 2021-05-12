@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.5.2
-Release  : 40
+Release  : 41
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.5.2/nfs-utils-2.5.2.tar.xz
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.5.2/nfs-utils-2.5.2.tar.xz
 Source1  : nfs-utils.tmpfiles
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1610584707
+export SOURCE_DATE_EPOCH=1620777698
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -142,7 +142,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %reconfigure --disable-static --without-tcp-wrappers \
 --disable-gss \
 --disable-ipv6 \
---disable-tirpc \
+--enable-tirpc \
 --with-systemd=/usr/lib/systemd/system \
 --with-statedir=/run/nfs \
 --with-pluginpath=/usr/lib64/libnfsidmap/
@@ -156,7 +156,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1610584707
+export SOURCE_DATE_EPOCH=1620777698
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
 cp %{_builddir}/nfs-utils-2.5.2/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d

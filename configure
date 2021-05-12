@@ -1,7 +1,7 @@
 --without-tcp-wrappers
 --disable-gss
 --disable-ipv6
---disable-tirpc
+--enable-tirpc
 --with-systemd=/usr/lib/systemd/system
 --with-statedir=/run/nfs
 --with-pluginpath=/usr/lib64/libnfsidmap/
