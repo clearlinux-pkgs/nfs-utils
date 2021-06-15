@@ -1,4 +1,4 @@
-From ed83019ac653bff197aed9e453603832db276982 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Wed, 13 Jan 2021 16:32:25 -0800
 Subject: [PATCH] Fix rpc_pipefs paths to /run/nfs
@@ -28,7 +28,7 @@ mounted under /run/nfs/, not /var/lib/nfs/.
  rename systemd/{var-lib-nfs-rpc_pipefs.mount => run-nfs-rpc_pipefs.mount} (84%)
 
 diff --git a/nfs.conf b/nfs.conf
-index 186a5b19e24c..e7ef672eb9c8 100644
+index 8c714ff..b60c394 100644
 --- a/nfs.conf
 +++ b/nfs.conf
 @@ -3,7 +3,7 @@
@@ -41,7 +41,7 @@ index 186a5b19e24c..e7ef672eb9c8 100644
  [exports]
  # rootdir=/export
 diff --git a/systemd/Makefile.am b/systemd/Makefile.am
-index 75cdd9f54c81..bb7f3e2c8e46 100644
+index 650ad25..b989e2c 100644
 --- a/systemd/Makefile.am
 +++ b/systemd/Makefile.am
 @@ -13,7 +13,7 @@ unit_files =  \
@@ -54,7 +54,7 @@ index 75cdd9f54c81..bb7f3e2c8e46 100644
  if CONFIG_NFSV4
  unit_files += \
 diff --git a/systemd/rpc-pipefs-generator.c b/systemd/rpc-pipefs-generator.c
-index 8e218aa70645..c24db567a45d 100644
+index 8e218aa..c24db56 100644
 --- a/systemd/rpc-pipefs-generator.c
 +++ b/systemd/rpc-pipefs-generator.c
 @@ -21,7 +21,7 @@
@@ -67,7 +67,7 @@ index 8e218aa70645..c24db567a45d 100644
  static int generate_mount_unit(const char *pipefs_path, const char *pipefs_unit,
  			       const char *dirname)
 diff --git a/systemd/rpc_pipefs.target b/systemd/rpc_pipefs.target
-index 01d4d2786982..d56d969de8df 100644
+index 01d4d27..d56d969 100644
 --- a/systemd/rpc_pipefs.target
 +++ b/systemd/rpc_pipefs.target
 @@ -1,3 +1,3 @@
@@ -80,7 +80,7 @@ diff --git a/systemd/var-lib-nfs-rpc_pipefs.mount b/systemd/run-nfs-rpc_pipefs.m
 similarity index 84%
 rename from systemd/var-lib-nfs-rpc_pipefs.mount
 rename to systemd/run-nfs-rpc_pipefs.mount
-index 26d1c7634057..23342fd1a59e 100644
+index 26d1c76..23342fd 100644
 --- a/systemd/var-lib-nfs-rpc_pipefs.mount
 +++ b/systemd/run-nfs-rpc_pipefs.mount
 @@ -6,5 +6,5 @@ Conflicts=umount.target
@@ -91,7 +91,7 @@ index 26d1c7634057..23342fd1a59e 100644
 +Where=/run/nfs/rpc_pipefs
  Type=rpc_pipefs
 diff --git a/utils/blkmapd/blkmapd.man b/utils/blkmapd/blkmapd.man
-index 4b3d3f04e62a..6cfea23e71ae 100644
+index 4b3d3f0..6cfea23 100644
 --- a/utils/blkmapd/blkmapd.man
 +++ b/utils/blkmapd/blkmapd.man
 @@ -56,7 +56,7 @@ configuration file:
@@ -104,7 +104,7 @@ index 4b3d3f04e62a..6cfea23e71ae 100644
  .BR nfs (5),
  .BR dmsetup (8),
 diff --git a/utils/blkmapd/device-discovery.c b/utils/blkmapd/device-discovery.c
-index f5f9b10b95f2..a7ab895c2b85 100644
+index 77ebe73..2736ac8 100644
 --- a/utils/blkmapd/device-discovery.c
 +++ b/utils/blkmapd/device-discovery.c
 @@ -63,7 +63,7 @@
@@ -113,11 +113,11 @@ index f5f9b10b95f2..a7ab895c2b85 100644
  
 -#define RPCPIPE_DIR	"/var/lib/nfs/rpc_pipefs"
 +#define RPCPIPE_DIR	NFS_STATEDIR "/rpc_pipefs"
- #define PID_FILE	"/var/run/blkmapd.pid"
+ #define PID_FILE	"/run/blkmapd.pid"
  
  #define CONF_SAVE(w, f) do {			\
 diff --git a/utils/gssd/gssd.h b/utils/gssd/gssd.h
-index 1e8c58d47203..9fc5ef2079e6 100644
+index c52c5b4..519dc43 100644
 --- a/utils/gssd/gssd.h
 +++ b/utils/gssd/gssd.h
 @@ -39,7 +39,7 @@
@@ -130,10 +130,10 @@ index 1e8c58d47203..9fc5ef2079e6 100644
  #define DNOTIFY_SIGNAL		(SIGRTMIN + 3)
  
 diff --git a/utils/gssd/gssd.man b/utils/gssd/gssd.man
-index 26095a898293..b967af5284fc 100644
+index 2a5384d..36e5a41 100644
 --- a/utils/gssd/gssd.man
 +++ b/utils/gssd/gssd.man
-@@ -233,7 +233,7 @@ supports settable encryption types.
+@@ -237,7 +237,7 @@ supports settable encryption types.
  Tells
  .B rpc.gssd
  where to look for the rpc_pipefs filesystem.  The default value is
@@ -143,7 +143,7 @@ index 26095a898293..b967af5284fc 100644
  .BI "-d " search-path
  This option specifies a colon separated list of directories that
 diff --git a/utils/idmapd/idmapd.c b/utils/idmapd/idmapd.c
-index 51c71fbbc643..e2c160e8a4fd 100644
+index 51c71fb..e2c160e 100644
 --- a/utils/idmapd/idmapd.c
 +++ b/utils/idmapd/idmapd.c
 @@ -73,7 +73,7 @@
@@ -156,7 +156,7 @@ index 51c71fbbc643..e2c160e8a4fd 100644
  
  #ifndef NFSD_DIR
 diff --git a/utils/idmapd/idmapd.man b/utils/idmapd/idmapd.man
-index 5f34d2bff860..bcdfec73f60c 100644
+index 5f34d2b..bcdfec7 100644
 --- a/utils/idmapd/idmapd.man
 +++ b/utils/idmapd/idmapd.man
 @@ -69,7 +69,7 @@ in the foreground and prints all output to the terminal.
@@ -169,7 +169,7 @@ index 5f34d2bff860..bcdfec73f60c 100644
  Use configuration file
  .Ar path .
 diff --git a/utils/nfsdcld/nfsdcld.man b/utils/nfsdcld/nfsdcld.man
-index 861f1c49efec..167ea809b982 100644
+index 861f1c4..167ea80 100644
 --- a/utils/nfsdcld/nfsdcld.man
 +++ b/utils/nfsdcld/nfsdcld.man
 @@ -158,7 +158,7 @@ Runs the daemon in the foreground and prints all output to stderr
@@ -181,6 +181,3 @@ index 861f1c49efec..167ea809b982 100644
  .IP "\fB\-s\fR \fIstorage_dir\fR, \fB\-\-storagedir\fR=\fIstorage_dir\fR" 4
  .IX Item "-s storagedir, --storagedir=storage_dir"
  Directory where stable storage information should be kept. The default
--- 
-2.30.0
-
