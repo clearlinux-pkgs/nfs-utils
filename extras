@@ -1,2 +1,4 @@
 /usr/bin/nfsiostat
 /usr/bin/mountstats
+/usr/bin/nfsdclddb
+/usr/bin/nfsdclnts
