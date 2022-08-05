@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.6.1
-Release  : 43
+Release  : 44
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.1/nfs-utils-2.6.1.tar.gz
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.1/nfs-utils-2.6.1.tar.gz
 Source1  : nfs-utils.tmpfiles
@@ -19,18 +19,26 @@ Requires: nfs-utils-man = %{version}-%{release}
 Requires: nfs-utils-services = %{version}-%{release}
 Requires: rpcbind
 BuildRequires : LVM2-dev
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : cyrus-sasl-dev
 BuildRequires : e2fsprogs-dev
+BuildRequires : gettext-bin
 BuildRequires : glibc-staticdev
 BuildRequires : keyutils-dev
 BuildRequires : libcap-dev
 BuildRequires : libtirpc-dev
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : openldap-dev
+BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(libevent)
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 Patch1: 0001-Enabling-nfs-client-by-default-on-installation.patch
 Patch2: 0002-Require-rpcbind-for-nfs-server.patch
+Patch3: build-gcc12.patch
 
 %description
 This is nfs-utils, the Linux NFS userland utility package.
@@ -114,13 +122,14 @@ services components for the nfs-utils package.
 cd %{_builddir}/nfs-utils-2.6.1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1643052426
+export SOURCE_DATE_EPOCH=1659708217
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -129,7 +138,7 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
 export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
-%configure --disable-static --without-tcp-wrappers \
+%reconfigure --disable-static --without-tcp-wrappers \
 --disable-gss \
 --disable-ipv6 \
 --enable-tirpc \
@@ -146,12 +155,12 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1643052426
+export SOURCE_DATE_EPOCH=1659708217
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
-cp %{_builddir}/nfs-utils-2.6.1/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d
-cp %{_builddir}/nfs-utils-2.6.1/support/nfsidmap/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/82c1cadc8c3bb346234c740b2b77c7d607b8f9ac
-cp %{_builddir}/nfs-utils-2.6.1/utils/statd/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/74a8a6531a42e124df07ab5599aad63870fa0bd4
+cp %{_builddir}/nfs-utils-%{version}/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d
+cp %{_builddir}/nfs-utils-%{version}/support/nfsidmap/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/82c1cadc8c3bb346234c740b2b77c7d607b8f9ac
+cp %{_builddir}/nfs-utils-%{version}/utils/statd/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/74a8a6531a42e124df07ab5599aad63870fa0bd4
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nfs-utils.conf

@@ -1,0 +1,20 @@
+--- nfs-utils-2.6.1/configure.ac~	2022-01-10 15:07:16.000000000 +0000
++++ nfs-utils-2.6.1/configure.ac	2022-08-05 13:57:16.932339611 +0000
+@@ -650,7 +650,6 @@
+  $rpcgen_cflags \
+  -Werror=missing-prototypes \
+  -Werror=missing-declarations \
+- -Werror=format=2 \
+  -Werror=undef \
+  -Werror=missing-include-dirs \
+  -Werror=strict-aliasing=2 \
+--- nfs-utils-2.6.1/configure.ac~	2022-08-05 13:57:16.000000000 +0000
++++ nfs-utils-2.6.1/configure.ac	2022-08-05 14:00:27.678940996 +0000
+@@ -676,7 +676,6 @@
+   CFLAGS="$my_save_cflags"
+ ])
+ 
+-CHECK_CCSUPPORT([-Werror=format-overflow=2], [flg1])
+ CHECK_CCSUPPORT([-Werror=int-conversion], [flg2])
+ CHECK_CCSUPPORT([-Werror=incompatible-pointer-types], [flg3])
+ CHECK_CCSUPPORT([-Werror=misleading-indentation], [flg4])
