@@ -4,7 +4,7 @@
 #
 Name     : nfs-utils
 Version  : 2.6.2
-Release  : 46
+Release  : 47
 URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.2/nfs-utils-2.6.2.tar.xz
 Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.2/nfs-utils-2.6.2.tar.xz
 Source1  : nfs-utils.tmpfiles
