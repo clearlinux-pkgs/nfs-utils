@@ -4,10 +4,10 @@
 # Using build pattern: configure
 #
 Name     : nfs-utils
-Version  : 2.6.2
-Release  : 48
-URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.2/nfs-utils-2.6.2.tar.xz
-Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.2/nfs-utils-2.6.2.tar.xz
+Version  : 2.6.3
+Release  : 49
+URL      : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.3/nfs-utils-2.6.3.tar.xz
+Source0  : https://sourceforge.net/projects/nfs/files/nfs-utils/2.6.3/nfs-utils-2.6.3.tar.xz
 Source1  : nfs-utils.tmpfiles
 Summary  : Library that handles mapping between names and ids for NFSv4.
 Group    : Development/Tools
@@ -30,6 +30,7 @@ BuildRequires : libcap-dev
 BuildRequires : libtirpc-dev
 BuildRequires : openldap-dev
 BuildRequires : pkgconfig(libevent)
+BuildRequires : pkgconfig(mount)
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : util-linux-dev
 # Suppress stripping binaries
@@ -130,18 +131,21 @@ services components for the nfs-utils package.
 
 
 %prep
-%setup -q -n nfs-utils-2.6.2
-cd %{_builddir}/nfs-utils-2.6.2
+%setup -q -n nfs-utils-2.6.3
+cd %{_builddir}/nfs-utils-2.6.3
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
+pushd ..
+cp -a nfs-utils-2.6.3 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688577141
+export SOURCE_DATE_EPOCH=1694735477
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -158,6 +162,22 @@ export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonl
 --with-statedir=/run/nfs \
 --with-pluginpath=/usr/lib64/libnfsidmap/
 make  %{?_smp_mflags}
+unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+%reconfigure --disable-static --without-tcp-wrappers \
+--disable-gss \
+--disable-ipv6 \
+--enable-tirpc \
+--with-systemd=/usr/lib/systemd/system \
+--with-statedir=/run/nfs \
+--with-pluginpath=/usr/lib64/libnfsidmap/
+make  %{?_smp_mflags}
+popd
 
 %check
 export LANG=C.UTF-8
@@ -165,14 +185,19 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
+cd ../buildavx2;
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1688577141
+export SOURCE_DATE_EPOCH=1694735477
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nfs-utils
 cp %{_builddir}/nfs-utils-%{version}/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/60457201edeb887de11bf46b66fc02494d08ef4d || :
 cp %{_builddir}/nfs-utils-%{version}/support/nfsidmap/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/82c1cadc8c3bb346234c740b2b77c7d607b8f9ac || :
 cp %{_builddir}/nfs-utils-%{version}/utils/statd/COPYING %{buildroot}/usr/share/package-licenses/nfs-utils/74a8a6531a42e124df07ab5599aad63870fa0bd4 || :
+pushd ../buildavx2/
+%make_install_v3
+popd
 %make_install
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nfs-utils.conf
@@ -181,18 +206,36 @@ mkdir -p %{buildroot}/usr/lib/systemd/scripts
 install -Dm755 -t %{buildroot}/usr/lib/systemd/scripts systemd/nfs-utils_env.sh
 rm -rf %{buildroot}/run
 ## install_append end
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/modprobe.d/50-nfs.conf
+/V3/usr/lib/systemd/system-generators/nfs-server-generator
+/V3/usr/lib/systemd/system-generators/rpc-pipefs-generator
 /usr/lib/systemd/scripts/nfs-utils_env.sh
 /usr/lib/systemd/system-generators/nfs-server-generator
 /usr/lib/systemd/system-generators/rpc-pipefs-generator
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/blkmapd
+/V3/usr/bin/exportfs
+/V3/usr/bin/fsidd
+/V3/usr/bin/nfsconf
+/V3/usr/bin/nfsdcld
+/V3/usr/bin/nfsdcltrack
+/V3/usr/bin/nfsidmap
+/V3/usr/bin/nfsstat
+/V3/usr/bin/rpc.idmapd
+/V3/usr/bin/rpc.mountd
+/V3/usr/bin/rpc.nfsd
+/V3/usr/bin/rpc.statd
+/V3/usr/bin/rpcdebug
+/V3/usr/bin/showmount
+/V3/usr/bin/sm-notify
 /usr/bin/blkmapd
 /usr/bin/exportfs
+/usr/bin/fsidd
 /usr/bin/mount.nfs
 /usr/bin/mount.nfs4
 /usr/bin/nfsconf
@@ -215,6 +258,7 @@ rm -rf %{buildroot}/run
 %files config
 %defattr(-,root,root,-)
 /usr/lib/tmpfiles.d/nfs-utils.conf
+/usr/lib/udev/rules.d/60-nfs.rules
 /usr/lib/udev/rules.d/99-nfs.rules
 
 %files dev
@@ -234,6 +278,11 @@ rm -rf %{buildroot}/run
 
 %files lib
 %defattr(-,root,root,-)
+/V3/usr/lib64/libnfsidmap.so.1.0.0
+/V3/usr/lib64/libnfsidmap/nsswitch.so
+/V3/usr/lib64/libnfsidmap/regex.so
+/V3/usr/lib64/libnfsidmap/static.so
+/V3/usr/lib64/libnfsidmap/umich_ldap.so
 /usr/lib64/libnfsidmap.so.1
 /usr/lib64/libnfsidmap.so.1.0.0
 /usr/lib64/libnfsidmap/nsswitch.so
@@ -243,6 +292,7 @@ rm -rf %{buildroot}/run
 
 %files libexec
 %defattr(-,root,root,-)
+/V3/usr/libexec/nfsrahead
 /usr/libexec/nfsrahead
 
 %files license
@@ -290,6 +340,7 @@ rm -rf %{buildroot}/run
 
 %files services
 %defattr(-,root,root,-)
+/usr/lib/systemd/system/fsidd.service
 /usr/lib/systemd/system/nfs-blkmap.service
 /usr/lib/systemd/system/nfs-client.target
 /usr/lib/systemd/system/nfs-idmapd.service

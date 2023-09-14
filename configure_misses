@@ -1,8 +1,16 @@
 Configure miss: __res_querydomain in -lresolv
+Configure miss: __res_querydomain in -lresolv
+Configure miss: authgss_free_private_data in -ltirpc
 Configure miss: authgss_free_private_data in -ltirpc
 Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
+Configure miss: gss_krb5_ccache_name in -lgssapi_krb5
 Configure miss: gss_krb5_ccache_name in -lgssapi_krb5
 Configure miss: gsssasl.h
+Configure miss: gsssasl.h
+Configure miss: sasl.h
 Configure miss: sasl.h
 Configure miss: whether lstat accepts an empty string
+Configure miss: whether lstat accepts an empty string
+Configure miss: x86_64-generic-linux-gnu-file
 Configure miss: x86_64-generic-linux-gnu-file
