@@ -8,3 +8,4 @@ libcap-dev
 libtirpc-dev
 sqlite-autoconf-dev
 util-linux-dev
+libxml2-dev
