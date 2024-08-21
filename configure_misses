@@ -4,10 +4,14 @@ Configure miss: authgss_free_private_data in -ltirpc
 Configure miss: authgss_free_private_data in -ltirpc
 Configure miss: g++ option to enable C++11 features
 Configure miss: g++ option to enable C++11 features
+Configure miss: gcc option to enable large file support
+Configure miss: gcc option to enable large file support
 Configure miss: gss_krb5_ccache_name in -lgssapi_krb5
 Configure miss: gss_krb5_ccache_name in -lgssapi_krb5
 Configure miss: gsssasl.h
 Configure miss: gsssasl.h
+Configure miss: rpc_gss_seccreate in -ltirpc
+Configure miss: rpc_gss_seccreate in -ltirpc
 Configure miss: sasl.h
 Configure miss: sasl.h
 Configure miss: whether lstat accepts an empty string
